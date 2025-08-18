@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:padding="12dp"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+
+    <EditText android:id="@+id/etPlayerName" android:hint="Nombre del jugador" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    <EditText android:id="@+id/etPlayerPosition" android:hint="Posición" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp"/>
+    <EditText android:id="@+id/etPlayerNumber" android:hint="Número" android:inputType="number" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp"/>
+    <Spinner android:id="@+id/spTeams" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp"/>
+</LinearLayout>
