@@ -1,12 +1,30 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+
+    <!-- Tema base con Material 3 -->
     <style name="Base.Theme.TorneoUniversitario" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Colores principales -->
+        <item name="colorPrimary">@color/primary_green</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/dark_green</item>
+
+        <!-- Colores secundarios -->
+        <item name="colorSecondary">@color/secondary_green</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSecondaryContainer">@color/muted_green</item>
+
+        <!-- Fondo -->
+        <item name="android:windowBackground">@color/dark_bg</item>
+        <item name="android:colorBackground">@color/dark_bg</item>
+
+        <!-- Texto -->
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/muted_green</item>
     </style>
 
+    <!-- Tema default de la app -->
     <style name="Theme.TorneoUniversitario" parent="Base.Theme.TorneoUniversitario" />
 
+    <!-- Sin ActionBar -->
     <style name="Theme.TorneoUniversitario.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

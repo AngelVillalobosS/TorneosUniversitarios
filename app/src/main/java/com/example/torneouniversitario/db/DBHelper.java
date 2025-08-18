@@ -193,6 +193,90 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+    // Obtener usuario por email */
+    public Cursor getUserByEmail(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM users WHERE email = ?", new String[]{email});
+    }
+
+    // Obtener todos los usuarios
+    public Cursor getAllUsers() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM users", null);
+    }
+
+//   Obtener todos los árbitros (role = REFEREE)
+    public Cursor getAllReferees() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM users WHERE role = 'REFEREE'", null);
+    }
+
+
+// ================== Equipos ==================
+
+//  Obtener todos los equipos
+    public Cursor getAllTeamsCursor() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM teams", null);
+    }
+
+//   Obtener equipo por ID
+    public Cursor getTeamById(int teamId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM teams WHERE id = ?", new String[]{String.valueOf(teamId)});
+    }
+
+//Obtener partidos de un equipo (sea local o visitante)
+    public Cursor getMatchesByTeam(int teamId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM matches WHERE team1_id = ? OR team2_id = ?",
+                new String[]{String.valueOf(teamId), String.valueOf(teamId)});
+    }
+
+//Obtener partido por ID
+    public Cursor getMatchById(int matchId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM matches WHERE id = ?", new String[]{String.valueOf(matchId)});
+    }
+
+    // ==================== JUGADORES ====================
+
+    public List<Player> getAllPlayers() {
+        List<Player> players = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT id, name, position, number, team_id FROM players", null);
+        if (c.moveToFirst()) {
+            do {
+                Player p = new Player(
+                        c.getInt(0),
+                        c.getString(1),
+                        c.getString(2),
+                        c.getInt(3),
+                        c.getInt(4)
+                );
+                players.add(p);
+            } while (c.moveToNext());
+        }
+        c.close();
+        return players;
+    }
+
+    public int updatePlayer(Player player) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("name", player.getName());
+        cv.put("position", player.getPosition());
+        cv.put("number", player.getNumber());
+        cv.put("team_id", player.getTeamId());
+        return db.update("players", cv, "id=?", new String[]{String.valueOf(player.getId())});
+    }
+
+    public int deletePlayer(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete("players", "id=?", new String[]{String.valueOf(id)});
+    }
+
+
 
 
 

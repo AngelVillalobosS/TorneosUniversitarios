@@ -30,7 +30,6 @@ public class AdminPlayersFragment extends Fragment implements PlayerAdapter.OnPl
     RecyclerView rv;
     PlayerAdapter adapter;
     FloatingActionButton fabAdd;
-    List<Team> teams;
 
     public AdminPlayersFragment() {}
 
@@ -40,6 +39,7 @@ public class AdminPlayersFragment extends Fragment implements PlayerAdapter.OnPl
         db = new DBHelper(getContext());
         rv = v.findViewById(R.id.rvPlayers);
         fabAdd = v.findViewById(R.id.fabAddPlayer);
+
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         loadPlayers();
 
@@ -49,10 +49,7 @@ public class AdminPlayersFragment extends Fragment implements PlayerAdapter.OnPl
     }
 
     private void loadPlayers() {
-        // Por simplicidad listamos todos los jugadores
-        // (puedes modificar para filtrar por equipo si lo deseas)
-        teams = db.getAllTeams();
-        List<Player> players = db.getPlayersByTeam(-1); // Ajustar si filtras por equipo
+        List<Player> players = db.getAllPlayers();
         adapter = new PlayerAdapter(players, this);
         rv.setAdapter(adapter);
     }
@@ -110,12 +107,13 @@ public class AdminPlayersFragment extends Fragment implements PlayerAdapter.OnPl
                 .setTitle("Editar jugador")
                 .setView(dialogV)
                 .setPositiveButton("Guardar", (d, w) -> {
-                    etName.getText().toString().trim();
-                    etPos.getText().toString().trim();
-                    Integer.parseInt(etNum.getText().toString().trim());
-                    spTeams.getSelectedItemPosition();
-                    // No hemos implementado updatePlayer en DBHelper; puedes añadirlo igual que updateTeam
-                    Toast.makeText(getContext(), "Actualizar jugador en DBHelper", Toast.LENGTH_SHORT).show();
+                    String name = etName.getText().toString().trim();
+                    String pos = etPos.getText().toString().trim();
+                    int num = Integer.parseInt(etNum.getText().toString().trim());
+                    int teamId = teamList.get(spTeams.getSelectedItemPosition()).getId();
+
+                    Player updated = new Player(p.getId(), name, pos, num, teamId);
+                    db.updatePlayer(updated);
                     loadPlayers();
                 })
                 .setNegativeButton("Cancelar", null)
@@ -124,6 +122,14 @@ public class AdminPlayersFragment extends Fragment implements PlayerAdapter.OnPl
 
     @Override
     public void onDelete(Player p) {
-        Toast.makeText(getContext(), "Eliminar jugador en DBHelper", Toast.LENGTH_SHORT).show();
+        new AlertDialog.Builder(getContext())
+                .setTitle("Eliminar jugador")
+                .setMessage("¿Seguro que deseas eliminar a " + p.getName() + "?")
+                .setPositiveButton("Sí", (d, w) -> {
+                    db.deletePlayer(p.getId());
+                    loadPlayers();
+                })
+                .setNegativeButton("Cancelar", null)
+                .show();
     }
 }
