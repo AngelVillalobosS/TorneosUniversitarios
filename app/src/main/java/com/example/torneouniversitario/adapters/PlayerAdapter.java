@@ -18,6 +18,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.ViewHolder
 
     public interface OnPlayerActionListener {
         void onEdit(Player p);
+
         void onDelete(Player p);
     }
 

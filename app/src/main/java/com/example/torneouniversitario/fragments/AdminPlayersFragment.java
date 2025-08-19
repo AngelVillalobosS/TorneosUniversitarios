@@ -31,7 +31,8 @@ public class AdminPlayersFragment extends Fragment implements PlayerAdapter.OnPl
     PlayerAdapter adapter;
     FloatingActionButton fabAdd;
 
-    public AdminPlayersFragment() {}
+    public AdminPlayersFragment() {
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

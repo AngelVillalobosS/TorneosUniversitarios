@@ -1,19 +1,35 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Admin -->
-    <group android:checkableBehavior="single">
-        <item android:id="@+id/nav_admin_teams" android:title="Gestión de equipos" />
-        <item android:id="@+id/nav_admin_players" android:title="Gestión de jugadores" />
-        <item android:id="@+id/nav_admin_matches" android:title="Gestión de partidos" />
+    <!--    Admin -->
+    <group android:id="@+id/group_admin">
+        <item
+            android:id="@+id/nav_admin_teams"
+            android:title="@string/admin_equipos" />
+        <item
+            android:id="@+id/nav_admin_players"
+            android:title="@string/admin_jugadores" />
+        <item
+            android:id="@+id/nav_admin_matches"
+            android:title="@string/admin_partidos" />
     </group>
-
     <!-- Jugador -->
-    <group>
-        <item android:id="@+id/nav_player_team" android:title="Mi equipo" />
-        <item android:id="@+id/nav_player_matches" android:title="Próximos partidos" />
+    <group android:id="@+id/group_player">
+        <item
+            android:id="@+id/nav_player_team"
+            android:title="@string/mi_equipo" />
+        <item
+            android:id="@+id/nav_player_matches"
+            android:title="@string/mis_partidos" />
     </group>
+    <!-- Arbitro -->
+    <group android:id="@+id/group_referee">
+        <item
+            android:id="@+id/nav_referee_matches"
+            android:title="@string/partidos_arbitrar" />
+    </group>
+    <!--    Cerrar Sesion (Para todos)-->
+    <item
+        android:id="@+id/nav_logout"
+        android:icon="@drawable/ic_logout"
+        android:title="@string/menu_logout" />
 
-    <!-- Árbitro -->
-    <group>
-        <item android:id="@+id/nav_ref_matches" android:title="Partidos asignados" />
-    </group>
 </menu>

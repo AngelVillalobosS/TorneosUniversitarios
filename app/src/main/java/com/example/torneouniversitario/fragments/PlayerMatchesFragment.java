@@ -21,7 +21,8 @@ public class PlayerMatchesFragment extends Fragment {
     DBHelper db;
     ListView lv;
 
-    public PlayerMatchesFragment() {}
+    public PlayerMatchesFragment() {
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

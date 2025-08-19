@@ -10,15 +10,33 @@ public class Team {
         this.name = name;
         this.sport = sport;
     }
+
     public Team(String name, String sport) {
-        this.name = name; this.sport = sport;
+        this.name = name;
+        this.sport = sport;
     }
 
-    public int getId() { return id; }
-    public String getName() { return name; }
-    public String getSport() { return sport; }
+    public int getId() {
+        return id;
+    }
 
-    public void setId(int id) { this.id = id; }
-    public void setName(String name) { this.name = name; }
-    public void setSport(String sport) { this.sport = sport; }
+    public String getName() {
+        return name;
+    }
+
+    public String getSport() {
+        return sport;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSport(String sport) {
+        this.sport = sport;
+    }
 }

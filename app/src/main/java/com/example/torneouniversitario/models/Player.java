@@ -8,15 +8,41 @@ public class Player {
     private int teamId;
 
     public Player(int id, String name, String position, int number, int teamId) {
-        this.id = id; this.name = name; this.position = position; this.number = number; this.teamId = teamId;
-    }
-    public Player(String name, String position, int number, int teamId) {
-        this.name = name; this.position = position; this.number = number; this.teamId = teamId;
+        this.id = id;
+        this.name = name;
+        this.position = position;
+        this.number = number;
+        this.teamId = teamId;
     }
 
-    public int getId() { return id; }
-    public String getName() { return name; }
-    public String getPosition() { return position; }
-    public int getNumber() { return number; }
-    public int getTeamId() { return teamId; }
+    public Player(String name, String position, int number, int teamId) {
+        this.name = name;
+        this.position = position;
+        this.number = number;
+        this.teamId = teamId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public int getTeamId() {
+        return teamId;
+    }
 }

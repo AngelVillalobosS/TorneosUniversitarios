@@ -25,7 +25,8 @@ public class PlayerTeamFragment extends Fragment {
     RecyclerView rv;
     TextView tvTeamName;
 
-    public PlayerTeamFragment() {}
+    public PlayerTeamFragment() {
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

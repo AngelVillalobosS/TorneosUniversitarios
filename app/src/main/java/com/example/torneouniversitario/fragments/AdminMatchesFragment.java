@@ -31,7 +31,8 @@ public class AdminMatchesFragment extends Fragment implements MatchAdapter.OnMat
     MatchAdapter adapter;
     FloatingActionButton fabAdd;
 
-    public AdminMatchesFragment() {}
+    public AdminMatchesFragment() {
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

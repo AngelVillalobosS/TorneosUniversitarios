@@ -53,31 +53,62 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void doSignup() {
-        String name = nameInput.getText() != null ? nameInput.getText().toString().trim() : "";
-        String email = emailInput.getText() != null ? emailInput.getText().toString().trim() : "";
-        String password = passwordInput.getText() != null ? passwordInput.getText().toString().trim() : "";
-        String confirm = confirmPasswordInput.getText() != null ? confirmPasswordInput.getText().toString().trim() : "";
+        String nameStr = nameInput.getText() != null ? nameInput.getText().toString().trim() : "";
+        String emailStr = emailInput.getText() != null ? emailInput.getText().toString().trim() : "";
+        String passwordStr = passwordInput.getText() != null ? passwordInput.getText().toString().trim() : "";
+        String confirmPasswordStr = confirmPasswordInput.getText() != null ? confirmPasswordInput.getText().toString().trim() : "";
 
-        if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirm.isEmpty()) {
-            Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show();
+        // Validaciones del nombre
+        if (nameStr.isEmpty()) {
+            nameInput.setError("Nombre requerido");
             return;
         }
-        if (!password.equals(confirm)) {
-            Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
+        if (!nameStr.matches("^[A-ZÁÉÍÓÚÑ][a-záéíóúñA-ZÁÉÍÓÚÑ ]*$")) {
+            nameInput.setError("Solo letras y espacios. Debe iniciar con mayúscula");
             return;
         }
 
+        // Validaciones del email
+        if (emailStr.isEmpty()) {
+            emailInput.setError("Email requerido");
+            return;
+        }
+        if (!emailStr.matches("[a-zA-Z0-9._%+-]+@uppuebla\\.edu\\.mx")) {
+            emailInput.setError("El email debe tener el formato nombre.apellidoXXXX@uppue.edu.mx");
+            return;
+        }
+
+        // Validaciones de la contraseña
+        if (passwordStr.isEmpty()) {
+            passwordInput.setError("Contraseña requerida");
+            return;
+        }
+        if (!passwordStr.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$")) {
+            passwordInput.setError("Debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número");
+            return;
+        }
+
+        // Confirmar contraseña
+        if (!passwordStr.equals(confirmPasswordStr)) {
+            confirmPasswordInput.setError("Las contraseñas no coinciden");
+            return;
+        }
+
+        // Mostrar progreso y registrar
         progressContainer.setVisibility(View.VISIBLE);
+        signupButton.setEnabled(false);
 
         emailInput.postDelayed(() -> {
-            long id = dbHelper.registerUser(name, email, password, "PLAYER"); // Default role: PLAYER
+            long id = dbHelper.registerUser(nameStr, emailStr, passwordStr, "PLAYER");
             progressContainer.setVisibility(View.GONE);
+            signupButton.setEnabled(true);
+
             if (id > 0) {
                 Toast.makeText(this, "Registro exitoso", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                 finish();
             } else {
-                Toast.makeText(this, "Error: el email ya está registrado", Toast.LENGTH_SHORT).show();
+                emailInput.setError("Error: el email ya está registrado");
             }
         }, 1000);
     }

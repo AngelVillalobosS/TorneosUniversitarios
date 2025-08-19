@@ -6,16 +6,16 @@
     <string name="password_hint">Ingresa tu Contraseña</string>
     <string name="login_button">Iniciar Sesión</string>
     <string name="signup_prompt">¿No tienes cuenta? Registrate</string>
-    <!-- Strings for SignUpActivity-->
+    <!-- Strings for SignUpActivity -->
     <string name="signup_title">Registrarse</string>
     <string name="in_name">Nombre completo</string>
-    <string name="in_email">email@example.com</string>
+    <string name="in_email">email@uppuebla.edu.com</string>
     <string name="in_psswrd">Ingresar Contraseña</string>
     <string name="ver_psswrd">Ingresar Contraseña de nuevo</string>
     <string name="signup_button">Registrar!</string>
     <string name="login_prompt">¿Ya tienes cuenta? Inicia Sesión</string>
 
-    <!--   Strings for MainActivity-->
+    <!--   Strings for MainActivity -->
     <string name="open_drawer">Abrir menú</string>
     <string name="close_drawer">Cerrar menú</string>
     <string name="app_logo">Universidad Politécnica de Puebla</string>
@@ -25,14 +25,32 @@
     <string name="title_activity_admin">AdminActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
+    <!--    Nav Header Admin-->
+    <string name="nav_header_title">Torneo UPPue</string>
+    <string name="nav_header_subtitle">Bienvenido Admin</string>
+    <string name="nav_header_desc">email@example.com</string>
+    <!--Settings-->
     <string name="action_settings">Settings</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <!--    Navbar-->
+    <string name="university_name">Universidad Politécnica de Puebla</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="torneo_name">Torneo UPPue</string>
+    <!--    Fragment referee_event-->
+    <string name="register_event">Registrar evento</string>
+    <string name="hint_id">ID Jugador</string>
+    <string name="minute">Minuto</string>
+    <!--    Navigation Menu-->
+    <string name="partidos_arbitrar">Partidos a arbitrar</string>
+    <string name="mis_partidos">Mis partidos</string>
+    <string name="mi_equipo">Mi equipo</string>
+    <string name="admin_partidos">Partidos</string>
+    <string name="admin_jugadores">Jugadores</string>
+    <string name="admin_equipos">Equipos</string>
+    <string name="menu_logout">Cerrar Sesion</string>
+
 </resources>

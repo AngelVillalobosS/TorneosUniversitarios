@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:padding="12dp"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_bg"
+    android:orientation="vertical"
+    android:padding="12dp">
 
-    <TextView android:id="@+id/tvTeamNamePlayer" android:textSize="18sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+    <androidx.cardview.widget.CardView
+        android:layout_width="250dp"
+        android:layout_height="45dp"
+        android:backgroundTint="@color/purple_200"
+        android:textAlignment="center"
+        app:cardCornerRadius="10dp">
+        <TextView
+            android:id="@+id/tvTeamNamePlayer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAlignment="center"
+            android:textColor="@color/dark_bg"
+            android:textSize="26sp" />
+    </androidx.cardview.widget.CardView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvPlayerTeam"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp" />
 </LinearLayout>

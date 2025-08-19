@@ -29,7 +29,8 @@ public class AdminTeamsFragment extends Fragment implements TeamAdapter.OnTeamAc
     TeamAdapter adapter;
     FloatingActionButton fabAdd;
 
-    public AdminTeamsFragment() {}
+    public AdminTeamsFragment() {
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -103,7 +104,7 @@ public class AdminTeamsFragment extends Fragment implements TeamAdapter.OnTeamAc
         new AlertDialog.Builder(getContext())
                 .setTitle("Confirmar eliminación")
                 .setMessage("Eliminar equipo " + t.getName() + " ?")
-                .setPositiveButton("Eliminar", (d,w) -> {
+                .setPositiveButton("Eliminar", (d, w) -> {
                     db.deleteTeam(t.getId());
                     loadTeams();
                     Toast.makeText(getContext(), "Equipo eliminado", Toast.LENGTH_SHORT).show();

@@ -3,6 +3,7 @@ package com.example.torneouniversitario.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -28,17 +29,27 @@ import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    DrawerLayout drawer;
-    String role, email;
-    int case1;
+    private DrawerLayout drawer;
+    private String role, email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        // Comprobar sesión antes de setContentView
+        SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
         role = getIntent().getStringExtra("role");
         email = getIntent().getStringExtra("email");
+
+        if (role == null) {
+            // No hay sesión activa, redirigir a LoginActivity
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+            return; // Detener la ejecución del resto del onCreate
+        }
+
+        setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -47,28 +58,58 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // set header info
-        View header = navigationView.getHeaderView(0);
+        // Eliminar header anterior si existe
+        if (navigationView.getHeaderCount() > 0) {
+            navigationView.removeHeaderView(navigationView.getHeaderView(0));
+        }
+
+        // Inflar header según rol
+        int headerRes = R.layout.nav_header_main; // default
+        if ("ADMIN".equals(role)) {
+            headerRes = R.layout.nav_header_admin;
+        } else if ("PLAYER".equals(role)) {
+            headerRes = R.layout.nav_header_player;
+        } else if ("REFEREE".equals(role)) {
+            headerRes = R.layout.nav_header_referee;
+        }
+
+        View header = navigationView.inflateHeaderView(headerRes);
+
         TextView tvRole = header.findViewById(R.id.tvRole);
-        tvRole.setText(role != null ? role : "USER");
+        if (tvRole != null) {
+            tvRole.setText(role != null ? role : "USER");
+        }
+
+        Menu menu = navigationView.getMenu();
+        menu.setGroupVisible(R.id.group_admin, "ADMIN".equals(role));
+        menu.setGroupVisible(R.id.group_player, "PLAYER".equals(role));
+        menu.setGroupVisible(R.id.group_referee, "REFEREE".equals(role));
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.open_drawer, R.string.close_drawer);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        // Default fragment según role
+        // Fragmento por defecto según rol
         if (savedInstanceState == null) {
             if ("ADMIN".equals(role)) {
                 navigationView.getMenu().findItem(R.id.nav_admin_teams).setChecked(true);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AdminTeamsFragment()).commit();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new AdminTeamsFragment())
+                        .commit();
             } else if ("REFEREE".equals(role)) {
-                navigationView.getMenu().findItem(R.id.nav_ref_matches).setChecked(true);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new RefereeMatchesFragment()).commit();
+                navigationView.getMenu().findItem(R.id.nav_referee_matches).setChecked(true);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new RefereeMatchesFragment())
+                        .commit();
             } else {
                 navigationView.getMenu().findItem(R.id.nav_player_team).setChecked(true);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PlayerTeamFragment()).commit();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new PlayerTeamFragment())
+                        .commit();
             }
         }
+
+        onCreateBackCallback();
     }
 
     @Override
@@ -86,8 +127,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.replace(R.id.fragment_container, new PlayerTeamFragment());
         } else if (id == R.id.nav_player_matches) {
             ft.replace(R.id.fragment_container, new PlayerMatchesFragment());
-        } else if (id == R.id.nav_ref_matches) {
+        } else if (id == R.id.nav_referee_matches) {
             ft.replace(R.id.fragment_container, new RefereeMatchesFragment());
+        } else if (id == R.id.nav_logout) {
+            logout();
+            return true;
         }
 
         ft.commit();
@@ -107,14 +151,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         finish();
     }
 
-    void onCreate() {
+    private void onCreateBackCallback() {
         if (BuildCompat.isAtLeastT()) {
             getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
                     OnBackInvokedDispatcher.PRIORITY_DEFAULT,
                     () -> {
-                        if(drawer.isDrawerOpen(GravityCompat.START)){
+                        if (drawer.isDrawerOpen(GravityCompat.START)) {
                             drawer.closeDrawer(GravityCompat.START);
-                        } else super.onBackPressed();
+                        } else {
+                            super.onBackPressed();
+                        }
                     }
             );
         }

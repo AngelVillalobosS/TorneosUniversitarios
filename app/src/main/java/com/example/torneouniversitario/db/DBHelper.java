@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import com.example.torneouniversitario.models.Team;
 import com.example.torneouniversitario.models.Player;
 import com.example.torneouniversitario.models.MatchModel;
@@ -36,25 +37,27 @@ public class DBHelper extends SQLiteOpenHelper {
         String createPlayers = "CREATE TABLE " + TABLE_PLAYERS + " (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, position TEXT, number INTEGER, team_id INTEGER)";
         String createMatches = "CREATE TABLE " + TABLE_MATCHES + " (id INTEGER PRIMARY KEY AUTOINCREMENT, teamA_id INTEGER, teamB_id INTEGER, date TEXT, time TEXT, place TEXT)";
         String createEvents = "CREATE TABLE " + TABLE_EVENTS + " (id INTEGER PRIMARY KEY AUTOINCREMENT, match_id INTEGER, player_id INTEGER, type TEXT, minute INTEGER, team_id INTEGER)";
+        String createSports = "CREATE TABLE" + TABLE_EVENTS + "(id INTEGER PRIMARY KEY AUTOINCREMENT, sport TEXT)";
 
         db.execSQL(createUsers);
         db.execSQL(createTeams);
         db.execSQL(createPlayers);
         db.execSQL(createMatches);
         db.execSQL(createEvents);
+        db.execSQL(createSports);
 
         // Insert demo user: admin / referee / player
         ContentValues admin = new ContentValues();
-        admin.put("email","admin@upp.edu.mx");
-        admin.put("password","admin123");
-        admin.put("role","ADMIN");
-        db.insert(TABLE_USERS,null,admin);
+        admin.put("email", "admin@uppuebla.edu.mx");
+        admin.put("password", "Admin123");
+        admin.put("role", "ADMIN");
+        db.insert(TABLE_USERS, null, admin);
 
         ContentValues ref = new ContentValues();
-        ref.put("email","ref@upp.edu.mx");
-        ref.put("password","ref123");
-        ref.put("role","REFEREE");
-        db.insert(TABLE_USERS,null,ref);
+        ref.put("email", "arbitro@uppuebla.edu.mx");
+        ref.put("password", "Arbi_123");
+        ref.put("role", "REFEREE");
+        db.insert(TABLE_USERS, null, ref);
     }
 
     @Override
@@ -85,14 +88,14 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put("name", t.getName());
         cv.put("sport", t.getSport());
-        return db.insert(TABLE_TEAMS,null,cv);
+        return db.insert(TABLE_TEAMS, null, cv);
     }
 
     public List<Team> getAllTeams() {
         List<Team> list = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.rawQuery("SELECT id, name, sport FROM " + TABLE_TEAMS + " ORDER BY name", null);
-        while (c.moveToNext()){
+        while (c.moveToNext()) {
             Team t = new Team(c.getInt(0), c.getString(1), c.getString(2));
             list.add(t);
         }
@@ -205,7 +208,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return db.rawQuery("SELECT * FROM users", null);
     }
 
-//   Obtener todos los árbitros (role = REFEREE)
+    //   Obtener todos los árbitros (role = REFEREE)
     public Cursor getAllReferees() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM users WHERE role = 'REFEREE'", null);
@@ -214,26 +217,26 @@ public class DBHelper extends SQLiteOpenHelper {
 
 // ================== Equipos ==================
 
-//  Obtener todos los equipos
+    //  Obtener todos los equipos
     public Cursor getAllTeamsCursor() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM teams", null);
     }
 
-//   Obtener equipo por ID
+    //   Obtener equipo por ID
     public Cursor getTeamById(int teamId) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM teams WHERE id = ?", new String[]{String.valueOf(teamId)});
     }
 
-//Obtener partidos de un equipo (sea local o visitante)
+    //Obtener partidos de un equipo (sea local o visitante)
     public Cursor getMatchesByTeam(int teamId) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM matches WHERE team1_id = ? OR team2_id = ?",
                 new String[]{String.valueOf(teamId), String.valueOf(teamId)});
     }
 
-//Obtener partido por ID
+    //Obtener partido por ID
     public Cursor getMatchById(int matchId) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM matches WHERE id = ?", new String[]{String.valueOf(matchId)});
@@ -276,8 +279,33 @@ public class DBHelper extends SQLiteOpenHelper {
         return db.delete("players", "id=?", new String[]{String.valueOf(id)});
     }
 
+    //    Para el arbitro
+    public List<Player> getPlayersByMatch(int matchId) {
+        List<Player> list = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
 
+        // Ejemplo: asumiendo que la tabla matches tiene team1_id y team2_id
+        Cursor c = db.rawQuery(
+                "SELECT p.* FROM players p " +
+                        "JOIN matches m ON (p.team_id = m.teamA_id OR p.team_id = m.teamB_id) " +
+                        "WHERE m.id = ?",
+                new String[]{String.valueOf(matchId)}
+        );
 
+        if (c.moveToFirst()) {
+            do {
+                list.add(new Player(
+                        c.getInt(c.getColumnIndexOrThrow("id")),
+                        c.getString(c.getColumnIndexOrThrow("name")),
+                        c.getString(c.getColumnIndexOrThrow("position")),
+                        c.getInt(c.getColumnIndexOrThrow("number")),
+                        c.getInt(c.getColumnIndexOrThrow("team_id"))
+                ));
+            } while (c.moveToNext());
+        }
+        c.close();
+        return list;
+    }
 
 
 }

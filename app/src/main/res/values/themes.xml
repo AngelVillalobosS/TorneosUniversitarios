@@ -19,6 +19,8 @@
         <!-- Texto -->
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/muted_green</item>
+
+        <item name="android:statusBarColor">@color/dark_green</item>
     </style>
 
     <!-- Tema default de la app -->

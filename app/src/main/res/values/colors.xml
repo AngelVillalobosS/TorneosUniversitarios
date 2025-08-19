@@ -8,9 +8,14 @@
     <color name="dark_green">#77AD78</color>
     <color name="muted_green">#6F8F72</color>
     <color name="dark_bg">#504B43</color>
+    <color name="light_bg">#737068</color>
     <color name="purple_200">#BB86FC</color>
     <color name="purple_500">#6200EE</color>
     <color name="purple_700">#3700B3</color>
     <color name="teal_200">#03DAC5</color>
     <color name="teal_700">#018786</color>
+    <!--    UPPue Colors -->
+    <color name="purple_uppue">#522D6E</color>
+    <color name="yellow_uppue">#F4B334</color>
+    <color name="green_uppue">#7FBC03</color>
 </resources>
