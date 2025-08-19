@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TorneoUniversitario</string>
+    <string name="app_name">Torneo UPPue</string>
     <!-- Strings for LoginActivity-->
     <string name="login_title">Inicio de Sesión</string>
     <string name="email_hint">Ingresa tu Email</string>

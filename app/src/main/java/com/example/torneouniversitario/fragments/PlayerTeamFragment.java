@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.torneouniversitario.R;
-import com.example.torneouniversitario.adapters.PlayerAdapter;
+import com.example.torneouniversitario.adapters.PlayerTeamAdapter;
 import com.example.torneouniversitario.db.DBHelper;
 import com.example.torneouniversitario.models.Player;
 import com.example.torneouniversitario.models.Team;
@@ -42,7 +42,7 @@ public class PlayerTeamFragment extends Fragment {
             Team t = teams.get(0);
             tvTeamName.setText(t.getName() + " (" + t.getSport() + ")");
             List<Player> players = db.getPlayersByTeam(t.getId());
-            rv.setAdapter(new PlayerAdapter(players, null));
+            rv.setAdapter(new PlayerTeamAdapter(players));
         }
 
         return v;

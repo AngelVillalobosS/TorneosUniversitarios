@@ -34,7 +34,12 @@ public class SignUpActivity extends AppCompatActivity {
         dbHelper = new DBHelper(this);
 
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> {
+            Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        });
+
 
         nameInput = findViewById(R.id.name_input);
         emailInput = findViewById(R.id.email_input);
