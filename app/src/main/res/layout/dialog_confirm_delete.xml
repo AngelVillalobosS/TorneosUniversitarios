@@ -8,43 +8,24 @@
     android:gravity="center">
 
     <TextView
-        android:id="@+id/tvDialogTitle"
+        android:id="@+id/tvDeleteMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Agregar Equipo"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/white"
+        android:text="@string/delete_player_mssg"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
         android:textAlignment="center"
-        android:paddingBottom="16dp"/>
-
-    <EditText
-        android:id="@+id/etTeamName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Nombre del equipo"
-        android:background="@drawable/bg_edittext"
-        android:padding="12dp"
-        android:textColor="@color/white"
-        android:textSize="16sp"/>
-
-    <Spinner
-        android:id="@+id/spinnerSports"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/bg_spinner"/>
+        android:paddingBottom="20dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginTop="16dp"
         android:weightSum="2">
 
         <Button
-            android:id="@+id/btnCancelTeam"
+            android:id="@+id/btnCancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -54,13 +35,14 @@
             android:layout_marginEnd="8dp"/>
 
         <Button
-            android:id="@+id/btnSaveTeam"
+            android:id="@+id/btnDelete"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Guardar"
-            android:backgroundTint="@color/green"
+            android:text="Eliminar"
+            android:backgroundTint="@color/red"
             android:textColor="@android:color/white"
             android:layout_marginStart="8dp"/>
     </LinearLayout>
+
 </LinearLayout>

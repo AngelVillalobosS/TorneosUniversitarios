@@ -21,5 +21,11 @@
     <!--    Selector-->
     <color name="nav_item_selected">#33FFFFFF</color> <!-- blanco translúcido -->
     <color name="nav_item_pressed">#55FFFFFF</color>
+<!-- Buttons Colors-->
+    <color name="red">#F44336</color>
+    <color name="dark_red">#A5251C</color>
+    <color name="gray">#9E9E9E</color>
+    <color name="green">#4CAF50</color>
+
 
 </resources>

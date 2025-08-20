@@ -41,7 +41,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="torneo_name">Torneo UPPue</string>
     <!--    Fragment referee_event-->
-    <string name="register_event">Registrar evento</string>
+    <string name="register_event">Registrar Evento</string>
     <string name="hint_id">ID Jugador</string>
     <string name="minute">Minuto</string>
     <!--    Navigation Menu-->
@@ -58,5 +58,12 @@
     <string name="player_num">Número</string>
     <string name="save_text">Guardar</string>
     <string name="cancel_text">Cancelar</string>
+    <string name="delete_player_mssg">¿Seguro que deseas eliminar este jugador?</string>
+    <string name="date_format">Fecha (YYYY-MM-DD)</string>
+    <string name="hour_format">Hora (HH:MM)</string>
+    <string name="player_select">Jugador:</string>
+    <string name="team_select">Equipo:</string>
+    <string name="register">Registrar</string>
+    <string name="conclude_match">Concluir partido</string>
 
 </resources>

@@ -4,38 +4,89 @@
     android:layout_height="match_parent"
     android:background="@color/dark_bg"
     android:orientation="vertical"
-    android:padding="12dp">
+    android:padding="16dp">
 
+    <!-- Título principal -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="sans-serif-medium"
         android:text="@string/register_event"
-        android:textSize="18sp" />
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <!-- Selección de equipo -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:text="@string/team_select"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <Spinner
         android:id="@+id/spEventType"
         android:layout_width="match_parent"
-        android:layout_height="40sp"
-        android:layout_marginTop="12dp" />
+        android:layout_height="50dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_spinner"
+        android:padding="8dp" />
+
+    <!-- Selección de jugador -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:text="@string/player_select"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <Spinner
         android:id="@+id/spPlayer"
         android:layout_width="match_parent"
-        android:layout_height="40sp" />
+        android:layout_height="50dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_spinner"
+        android:padding="8dp" />
 
-
+    <!-- Minuto del evento -->
     <EditText
         android:id="@+id/etMinute"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_edittext"
         android:hint="@string/minute"
-        android:inputType="time" />
+        android:inputType="number"
+        android:padding="12dp"
+        android:textColor="@color/white"
+        android:textColorHint="#C6BEBE"/>
 
+    <!-- Botón de registrar -->
     <Button
         android:id="@+id/btnRegisterEvent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/bg_button"
+        android:padding="12dp"
+        android:text="@string/register"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
+
+    <!-- Botón de registrar -->
+    <Button
+        android:id="@+id/btnConcludeMatch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:text="Registrar" />
+        android:background="@drawable/bg_button_warning"
+        android:padding="12dp"
+        android:text="@string/conclude_match"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
+
 </LinearLayout>

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -57,7 +58,6 @@ public class AdminTeamsFragment extends Fragment implements TeamAdapter.OnTeamAc
         EditText etName = dialogV.findViewById(R.id.etTeamName);
         Spinner spinnerSports = dialogV.findViewById(R.id.spinnerSports);
 
-        // llenar spinner con deportes desde la BD
         List<String> sportsList = db.getAllSports();
         ArrayAdapter<String> sportAdapter = new ArrayAdapter<>(
                 getContext(),
@@ -67,37 +67,42 @@ public class AdminTeamsFragment extends Fragment implements TeamAdapter.OnTeamAc
         sportAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSports.setAdapter(sportAdapter);
 
-        new AlertDialog.Builder(getContext())
-                .setTitle("Agregar equipo")
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
                 .setView(dialogV)
-                .setPositiveButton("Guardar", (d, w) -> {
-                    String name = etName.getText().toString().trim();
-                    String sport = (String) spinnerSports.getSelectedItem();
+                .setCancelable(true)
+                .create();
 
-                    if (name.isEmpty() || sport == null) {
-                        Toast.makeText(getContext(), "Completa todos los campos", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+        dialog.show();
 
-                    long id = db.insertTeam(new Team(name, sport));
-                    if (id > 0) {
-                        Toast.makeText(getContext(), "Equipo agregado", Toast.LENGTH_SHORT).show();
-                        loadTeams();
-                    }
-                })
-                .setNegativeButton("Cancelar", null)
-                .show();
+        dialogV.findViewById(R.id.btnSaveTeam).setOnClickListener(v -> {
+            String name = etName.getText().toString().trim();
+            String sport = (String) spinnerSports.getSelectedItem();
+
+            if (name.isEmpty() || sport == null) {
+                Toast.makeText(getContext(), "Completa todos los campos", Toast.LENGTH_SHORT).show();
+            } else {
+                long id = db.insertTeam(new Team(name, sport));
+                if (id > 0) {
+                    Toast.makeText(getContext(), "Equipo agregado", Toast.LENGTH_SHORT).show();
+                    loadTeams();
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        dialogV.findViewById(R.id.btnCancelTeam).setOnClickListener(v -> dialog.dismiss());
     }
 
     @Override
     public void onEdit(Team t) {
         View dialogV = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_team, null);
+        TextView title = dialogV.findViewById(R.id.tvDialogTitle);
         EditText etName = dialogV.findViewById(R.id.etTeamName);
         Spinner spinnerSports = dialogV.findViewById(R.id.spinnerSports);
 
+        title.setText("Editar Equipo");
         etName.setText(t.getName());
 
-        // llenar spinner con deportes
         List<String> sportsList = db.getAllSports();
         ArrayAdapter<String> sportAdapter = new ArrayAdapter<>(
                 getContext(),
@@ -107,35 +112,56 @@ public class AdminTeamsFragment extends Fragment implements TeamAdapter.OnTeamAc
         sportAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSports.setAdapter(sportAdapter);
 
-        // seleccionar el deporte actual del equipo
         int pos = sportsList.indexOf(t.getSport());
         if (pos >= 0) spinnerSports.setSelection(pos);
 
-        new AlertDialog.Builder(getContext())
-                .setTitle("Editar equipo")
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
                 .setView(dialogV)
-                .setPositiveButton("Guardar", (d, w) -> {
-                    t.setName(etName.getText().toString().trim());
-                    t.setSport((String) spinnerSports.getSelectedItem());
-                    db.updateTeam(t);
-                    loadTeams();
-                    Toast.makeText(getContext(), "Equipo actualizado", Toast.LENGTH_SHORT).show();
-                })
-                .setNegativeButton("Cancelar", null)
-                .show();
+                .setCancelable(true)
+                .create();
+
+        dialog.show();
+
+        dialogV.findViewById(R.id.btnSaveTeam).setOnClickListener(v -> {
+            String name = etName.getText().toString().trim();
+            String sport = (String) spinnerSports.getSelectedItem();
+
+            if (name.isEmpty() || sport == null) {
+                Toast.makeText(getContext(), "Completa todos los campos", Toast.LENGTH_SHORT).show();
+            } else {
+                t.setName(name);
+                t.setSport(sport);
+                db.updateTeam(t);
+                loadTeams();
+                Toast.makeText(getContext(), "Equipo actualizado", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+
+        dialogV.findViewById(R.id.btnCancelTeam).setOnClickListener(v -> dialog.dismiss());
     }
 
     @Override
     public void onDelete(Team t) {
-        new AlertDialog.Builder(getContext())
-                .setTitle("Confirmar eliminación")
-                .setMessage("Eliminar equipo " + t.getName() + " ?")
-                .setPositiveButton("Eliminar", (d, w) -> {
-                    db.deleteTeam(t.getId());
-                    loadTeams();
-                    Toast.makeText(getContext(), "Equipo eliminado", Toast.LENGTH_SHORT).show();
-                })
-                .setNegativeButton("Cancelar", null)
-                .show();
+        View dialogV = LayoutInflater.from(getContext()).inflate(R.layout.dialog_confirm_delete, null);
+        ((TextView) dialogV.findViewById(R.id.tvDeleteMessage))
+                .setText("¿Seguro que deseas eliminar a " + t.getName() + "?");
+
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
+                .setView(dialogV)
+                .setCancelable(true)
+                .create();
+
+        dialog.show();
+
+        dialogV.findViewById(R.id.btnDelete).setOnClickListener(v -> {
+            db.deleteTeam(t.getId());
+            loadTeams();
+            Toast.makeText(getContext(), "Equipo eliminado", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+        });
+
+        dialogV.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
     }
+
 }

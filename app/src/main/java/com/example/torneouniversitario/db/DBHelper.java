@@ -38,8 +38,9 @@ public class DBHelper extends SQLiteOpenHelper {
         String createUsers = "CREATE TABLE " + TABLE_USERS + " (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT UNIQUE, password TEXT, role TEXT, team_id INTEGER)";
         String createTeams = "CREATE TABLE " + TABLE_TEAMS + " (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, sport TEXT)";
         String createPlayers = "CREATE TABLE " + TABLE_PLAYERS + " (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, position TEXT, number INTEGER, team_id INTEGER)";
-        String createMatches = "CREATE TABLE " + TABLE_MATCHES + " (id INTEGER PRIMARY KEY AUTOINCREMENT, " + "teamA_id INTEGER, " + "teamB_id INTEGER, " + "date TEXT, " + "time TEXT, " + "place TEXT, " + "status TEXT DEFAULT 'pending')";
-        String createEvents = "CREATE TABLE " + TABLE_EVENTS + " (id INTEGER PRIMARY KEY AUTOINCREMENT, match_id INTEGER, player_id INTEGER, type TEXT, minute INTEGER, team_id INTEGER)";
+        String createMatches = "CREATE TABLE " + TABLE_MATCHES + " (id INTEGER PRIMARY KEY AUTOINCREMENT, " + "teamA_id INTEGER, " + "teamB_id INTEGER, " + "date TEXT, " + "time TEXT, " + "place TEXT, " + "status TEXT DEFAULT 'Pendiente')";
+
+        String createEvents = "CREATE TABLE " + TABLE_EVENTS + " (id INTEGER PRIMARY KEY AUTOINCREMENT, match_id INTEGER, player_id INTEGER, type TEXT, minute INTEGER, team_id INTEGER, status TEXT)";
         String createSports = "CREATE TABLE " + TABLE_SPORTS + "(id INTEGER PRIMARY KEY AUTOINCREMENT, sport TEXT)";
 
         db.execSQL(createUsers);
@@ -118,6 +119,7 @@ public class DBHelper extends SQLiteOpenHelper {
         c.close();
         return list;
     }
+
     // obtener lista de deportes (para el Spinner)
     public List<String> getAllSports() {
         List<String> sports = new ArrayList<>();
@@ -242,14 +244,32 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     // --- Teams queries ---
+    public void deleteMatch(int matchId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("matches", "id = ?", new String[]{String.valueOf(matchId)});
+        db.close();
+    }
+
     public Cursor getAllTeamsCursor() {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT * FROM teams", null);
     }
 
-    public Cursor getTeamById(int teamId) {
+    public Team getTeamById(int teamId) {
+        Team team = null;
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT * FROM teams WHERE id = ?", new String[]{String.valueOf(teamId)});
+        Cursor cursor = db.rawQuery("SELECT id, name, sport FROM teams WHERE id=?",
+                new String[]{String.valueOf(teamId)});
+        if (cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+            String sport = cursor.getString(cursor.getColumnIndexOrThrow("sport"));
+
+            // Usamos el constructor que acepta int, String, String
+            team = new Team(id, name, sport);
+        }
+        cursor.close();
+        return team;
     }
 
     public Cursor getMatchesByTeam(int teamId) {
@@ -304,6 +324,21 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         c.close();
         return list;
+    }
+
+    //    Match Querys
+    public int updateMatch(MatchModel match) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        // 👇 usa los mismos nombres de columnas que en onCreate
+        values.put("teamA_id", match.getTeamAId());
+        values.put("teamB_id", match.getTeamBId());
+        values.put("date", match.getDate());
+        values.put("time", match.getTime());
+        values.put("place", match.getPlace());
+
+        return db.update(TABLE_MATCHES, values, "id = ?", new String[]{String.valueOf(match.getId())});
     }
 
     // --- Reportes básicos ---

@@ -12,7 +12,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="@color/light_bg"
         android:padding="20dp">
+
+        <TextView
+            android:id="@+id/tvDialogTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Agregar Jugador"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:paddingBottom="16dp"/>
 
         <EditText
             android:id="@+id/etPlayerName"

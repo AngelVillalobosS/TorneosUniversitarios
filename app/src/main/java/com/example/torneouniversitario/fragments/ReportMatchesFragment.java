@@ -37,12 +37,13 @@ public class ReportMatchesFragment extends Fragment {
         List<MatchModel> matches = dbHelper.getMatchesFinished();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new MatchAdapter(matches, null));
+        recyclerView.setAdapter(new MatchAdapter(matches, null, dbHelper));
 
         btnExport.setOnClickListener(v -> exportToPdf(root, requireContext()));
 
         return root;
     }
+
 
     private void exportToPdf(View view, Context context) {
         Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);

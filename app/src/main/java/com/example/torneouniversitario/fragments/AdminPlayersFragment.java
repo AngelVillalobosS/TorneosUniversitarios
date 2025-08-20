@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -111,47 +112,83 @@ public class AdminPlayersFragment extends Fragment implements PlayerAdapter.OnPl
     @Override
     public void onEdit(Player p) {
         View dialogV = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_player, null);
+        TextView title = dialogV.findViewById(R.id.tvDialogTitle);
         EditText etName = dialogV.findViewById(R.id.etPlayerName);
         EditText etPos = dialogV.findViewById(R.id.etPlayerPosition);
         EditText etNum = dialogV.findViewById(R.id.etPlayerNumber);
         Spinner spTeams = dialogV.findViewById(R.id.spTeams);
+        Button btnSave = dialogV.findViewById(R.id.btnSavePlayer);
+        Button btnCancel = dialogV.findViewById(R.id.btnCancelPlayer);
+
+        title.setText("Editar Jugador");
 
         List<Team> teamList = db.getAllTeams();
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         for (Team t : teamList) spinnerAdapter.add(t.getName());
         spTeams.setAdapter(spinnerAdapter);
 
+        // Rellenar campos con la información actual
         etName.setText(p.getName());
         etPos.setText(p.getPosition());
         etNum.setText(String.valueOf(p.getNumber()));
+        for (int i = 0; i < teamList.size(); i++) {
+            if (teamList.get(i).getId() == p.getTeamId()) {
+                spTeams.setSelection(i);
+                break;
+            }
+        }
 
-        new AlertDialog.Builder(getContext())
-                .setTitle("Editar jugador")
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
                 .setView(dialogV)
-                .setPositiveButton("Guardar", (d, w) -> {
-                    String name = etName.getText().toString().trim();
-                    String pos = etPos.getText().toString().trim();
-                    int num = Integer.parseInt(etNum.getText().toString().trim());
-                    int teamId = teamList.get(spTeams.getSelectedItemPosition()).getId();
+                .setCancelable(true)
+                .create();
+        dialog.show();
 
-                    Player updated = new Player(p.getId(), name, pos, num, teamId);
-                    db.updatePlayer(updated);
-                    loadPlayers();
-                })
-                .setNegativeButton("Cancelar", null)
-                .show();
+        btnSave.setOnClickListener(v -> {
+            String name = etName.getText().toString().trim();
+            String pos = etPos.getText().toString().trim();
+            String numStr = etNum.getText().toString().trim();
+
+            if (name.isEmpty() || pos.isEmpty() || numStr.isEmpty()) {
+                Toast.makeText(getContext(), "Completa todos los campos", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            int number = Integer.parseInt(numStr);
+            int teamId = teamList.get(spTeams.getSelectedItemPosition()).getId();
+
+            Player updated = new Player(p.getId(), name, pos, number, teamId);
+            db.updatePlayer(updated);
+            loadPlayers();
+            dialog.dismiss();
+        });
+
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
     }
 
     @Override
     public void onDelete(Player p) {
-        new AlertDialog.Builder(getContext())
-                .setTitle("Eliminar jugador")
-                .setMessage("¿Seguro que deseas eliminar a " + p.getName() + "?")
-                .setPositiveButton("Sí", (d, w) -> {
-                    db.deletePlayer(p.getId());
-                    loadPlayers();
-                })
-                .setNegativeButton("Cancelar", null)
-                .show();
+        View dialogV = LayoutInflater.from(getContext()).inflate(R.layout.dialog_confirm_delete, null);
+        TextView tvMessage = dialogV.findViewById(R.id.tvDeleteMessage);
+        Button btnDelete = dialogV.findViewById(R.id.btnDelete);
+        Button btnCancel = dialogV.findViewById(R.id.btnCancel);
+
+        tvMessage.setText("¿Seguro que deseas eliminar a " + p.getName() + "?");
+
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
+                .setView(dialogV)
+                .setCancelable(true)
+                .create();
+        dialog.show();
+
+        btnDelete.setOnClickListener(v -> {
+            db.deletePlayer(p.getId());
+            loadPlayers();
+            dialog.dismiss();
+        });
+
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
     }
+
 }
