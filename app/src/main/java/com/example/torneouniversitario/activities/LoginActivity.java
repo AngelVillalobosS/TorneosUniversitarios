@@ -61,7 +61,8 @@ public class LoginActivity extends AppCompatActivity {
         emailInput.postDelayed(() -> {
             String role = dbHelper.login(email, password);
             progressContainer.setVisibility(View.GONE);
-            if (role != null) {
+
+            if (role != null && !role.trim().isEmpty()) {
                 // Guardar datos en SharedPreferences
                 SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
@@ -77,6 +78,10 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             } else {
+                // Limpiar sesión previa en caso de credenciales incorrectas
+                SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
+                prefs.edit().clear().apply();
+
                 Toast.makeText(this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
             }
         }, 1000);

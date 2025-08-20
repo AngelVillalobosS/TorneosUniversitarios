@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
-    private static final String DB_NAME = "torneosupp.db";
+    private static final String DB_NAME = "torneosuppue.db"; //Cambie el nombre de mi DB a uppue en lugar de upp (Por si da fallo)
     private static final int DB_VERSION = 1;
 
     // Tablas
@@ -25,6 +25,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String TABLE_PLAYERS = "players";
     public static final String TABLE_MATCHES = "matches";
     public static final String TABLE_EVENTS = "events";
+    public static final String TABLE_SPORTS = "sports";
 
     public DBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -37,7 +38,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String createPlayers = "CREATE TABLE " + TABLE_PLAYERS + " (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, position TEXT, number INTEGER, team_id INTEGER)";
         String createMatches = "CREATE TABLE " + TABLE_MATCHES + " (id INTEGER PRIMARY KEY AUTOINCREMENT, teamA_id INTEGER, teamB_id INTEGER, date TEXT, time TEXT, place TEXT)";
         String createEvents = "CREATE TABLE " + TABLE_EVENTS + " (id INTEGER PRIMARY KEY AUTOINCREMENT, match_id INTEGER, player_id INTEGER, type TEXT, minute INTEGER, team_id INTEGER)";
-        String createSports = "CREATE TABLE" + TABLE_EVENTS + "(id INTEGER PRIMARY KEY AUTOINCREMENT, sport TEXT)";
+        String createSports = "CREATE TABLE " + TABLE_SPORTS + "(id INTEGER PRIMARY KEY AUTOINCREMENT, sport TEXT)";
 
         db.execSQL(createUsers);
         db.execSQL(createTeams);
@@ -58,6 +59,12 @@ public class DBHelper extends SQLiteOpenHelper {
         ref.put("password", "Arbi_123");
         ref.put("role", "REFEREE");
         db.insert(TABLE_USERS, null, ref);
+
+        ContentValues sports = new ContentValues();
+        sports.put("sport", "Fútbol");
+        sports.put("sport", "Baloncesto");
+        sports.put("sport", "Voleibol");
+        db.insert(TABLE_SPORTS, null, sports);
     }
 
     @Override
