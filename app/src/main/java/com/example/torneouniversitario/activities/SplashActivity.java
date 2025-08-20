@@ -23,11 +23,17 @@ public class SplashActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
         boolean isLoggedIn = prefs.getBoolean("isLoggedIn", false);
 
-        // Redirigir después del delay
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            Intent intent = isLoggedIn
-                    ? new Intent(SplashActivity.this, MainActivity.class)
-                    : new Intent(SplashActivity.this, LoginActivity.class);
+            Intent intent;
+            if (isLoggedIn) {
+                String email = prefs.getString("userEmail", null);
+                String role = prefs.getString("userRole", null);
+                intent = new Intent(SplashActivity.this, MainActivity.class);
+                intent.putExtra("email", email);
+                intent.putExtra("role", role);
+            } else {
+                intent = new Intent(SplashActivity.this, LoginActivity.class);
+            }
             startActivity(intent);
             finish();
         }, SPLASH_DELAY);

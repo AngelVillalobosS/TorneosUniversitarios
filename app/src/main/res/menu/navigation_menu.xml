@@ -1,6 +1,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <!--    Admin -->
-    <group android:id="@+id/group_admin" android:checkableBehavior="single">
+    <group
+        android:id="@+id/group_admin"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_admin_teams"
             android:title="@string/admin_equipos" />
@@ -10,9 +12,17 @@
         <item
             android:id="@+id/nav_admin_matches"
             android:title="@string/admin_partidos" />
+        <item
+            android:id="@+id/nav_admin_report"
+            android:icon="@drawable/ic_reports"
+            android:title="Reporte"
+            android:visible="true" />
+
     </group>
     <!-- Jugador -->
-    <group android:id="@+id/group_player" android:checkableBehavior="single">
+    <group
+        android:id="@+id/group_player"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_player_team"
             android:title="@string/mi_equipo" />
@@ -21,15 +31,17 @@
             android:title="@string/mis_partidos" />
     </group>
     <!-- Arbitro -->
-    <group android:id="@+id/group_referee" android:checkableBehavior="single">
+    <group
+        android:id="@+id/group_referee"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_referee_matches"
             android:title="@string/partidos_arbitrar" />
     </group>
     <!--    Cerrar Sesion (Para todos)-->
     <item
-        android:checkable="true"
         android:id="@+id/nav_logout"
+        android:checkable="true"
         android:icon="@drawable/ic_logout"
         android:title="@string/menu_logout" />
 

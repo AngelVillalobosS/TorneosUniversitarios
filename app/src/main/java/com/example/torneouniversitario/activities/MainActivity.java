@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.torneouniversitario.R;
 import com.example.torneouniversitario.fragments.AdminMatchesFragment;
 import com.example.torneouniversitario.fragments.AdminPlayersFragment;
+import com.example.torneouniversitario.fragments.AdminReportFragment;
 import com.example.torneouniversitario.fragments.AdminTeamsFragment;
 import com.example.torneouniversitario.fragments.PlayerMatchesFragment;
 import com.example.torneouniversitario.fragments.PlayerTeamFragment;
@@ -36,17 +37,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Comprobar sesión antes de setContentView
+        // Obtener datos de sesión
         SharedPreferences prefs = getSharedPreferences("UserSession", MODE_PRIVATE);
         role = getIntent().getStringExtra("role");
         email = getIntent().getStringExtra("email");
 
-        if (role == null) {
+        if (role == null || email == null) {
+            role = prefs.getString("userRole", null);
+            email = prefs.getString("userEmail", null);
+        }
+
+        if (role == null || email == null) {
             // No hay sesión activa, redirigir a LoginActivity
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();
-            return; // Detener la ejecución del resto del onCreate
+            return; // Detener ejecución
         }
 
         setContentView(R.layout.activity_main);
@@ -132,7 +138,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_logout) {
             logout();
             return true;
+        } else if (id == R.id.nav_admin_report) {
+            ft.replace(R.id.fragment_container, new AdminReportFragment());
         }
+
 
         ft.commit();
         drawer.closeDrawer(GravityCompat.START);

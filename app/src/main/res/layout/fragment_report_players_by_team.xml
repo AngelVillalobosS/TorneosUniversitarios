@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="@drawable/bg_gradient">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerPlayersByTeam"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingBottom="8dp"/>
+
+    <Button
+        android:id="@+id/btnExportPlayersByTeamPDF"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/export_pdf"
+        android:backgroundTint="@color/primary_green"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="10dp"/>
+
+</LinearLayout>

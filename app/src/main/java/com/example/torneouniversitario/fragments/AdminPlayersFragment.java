@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -56,36 +57,56 @@ public class AdminPlayersFragment extends Fragment implements PlayerAdapter.OnPl
     }
 
     private void showAddDialog() {
+        // Inflar el layout personalizado UNA sola vez
         View dialogV = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_player, null);
+
         EditText etName = dialogV.findViewById(R.id.etPlayerName);
         EditText etPos = dialogV.findViewById(R.id.etPlayerPosition);
         EditText etNum = dialogV.findViewById(R.id.etPlayerNumber);
         Spinner spTeams = dialogV.findViewById(R.id.spTeams);
+        Button btnSave = dialogV.findViewById(R.id.btnSavePlayer); // Debe estar en tu layout
+        Button btnCancel = dialogV.findViewById(R.id.btnCancelPlayer); // Opcional
 
+        // Cargar lista de equipos en el Spinner
         List<Team> teamList = db.getAllTeams();
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         for (Team t : teamList) spinnerAdapter.add(t.getName());
         spTeams.setAdapter(spinnerAdapter);
 
-        new AlertDialog.Builder(getContext())
-                .setTitle("Agregar jugador")
+        // Crear el AlertDialog
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
                 .setView(dialogV)
-                .setPositiveButton("Guardar", (d, w) -> {
-                    String name = etName.getText().toString().trim();
-                    String pos = etPos.getText().toString().trim();
-                    String numStr = etNum.getText().toString().trim();
-                    if (name.isEmpty() || pos.isEmpty() || numStr.isEmpty() || teamList.isEmpty()) {
-                        Toast.makeText(getContext(), "Completa todos los campos", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    int number = Integer.parseInt(numStr);
-                    int teamId = teamList.get(spTeams.getSelectedItemPosition()).getId();
-                    db.insertPlayer(new Player(name, pos, number, teamId));
-                    loadPlayers();
-                })
-                .setNegativeButton("Cancelar", null)
-                .show();
+                .setCancelable(true)
+                .create();
+
+        dialog.show();
+
+        // Botón Guardar
+        btnSave.setOnClickListener(v -> {
+            String name = etName.getText().toString().trim();
+            String pos = etPos.getText().toString().trim();
+            String numStr = etNum.getText().toString().trim();
+
+            if (name.isEmpty() || pos.isEmpty() || numStr.isEmpty() || teamList.isEmpty()) {
+                Toast.makeText(getContext(), "Completa todos los campos", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            int number = Integer.parseInt(numStr);
+            int teamId = teamList.get(spTeams.getSelectedItemPosition()).getId();
+
+            db.insertPlayer(new Player(name, pos, number, teamId));
+            loadPlayers();
+            dialog.dismiss();
+        });
+
+        // Botón Cancelar opcional
+        if (btnCancel != null) {
+            btnCancel.setOnClickListener(v -> dialog.dismiss());
+        }
     }
+
 
     @Override
     public void onEdit(Player p) {

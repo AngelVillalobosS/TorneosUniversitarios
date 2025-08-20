@@ -52,5 +52,11 @@
     <string name="admin_jugadores">Jugadores</string>
     <string name="admin_equipos">Equipos</string>
     <string name="menu_logout">Cerrar Sesion</string>
+    <string name="export_pdf">📄 Exportar a PDF</string>
+    <string name="player_name">Nombre del jugador</string>
+    <string name="player_pos">Posición</string>
+    <string name="player_num">Número</string>
+    <string name="save_text">Guardar</string>
+    <string name="cancel_text">Cancelar</string>
 
 </resources>

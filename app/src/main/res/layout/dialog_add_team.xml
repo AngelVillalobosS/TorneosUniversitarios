@@ -11,10 +11,9 @@
         android:layout_height="wrap_content"
         android:hint="Nombre del equipo" />
 
-    <EditText
-        android:id="@+id/etTeamSport"
+    <Spinner
+        android:id="@+id/spinnerSports"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="Deporte" />
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp" />
 </LinearLayout>
